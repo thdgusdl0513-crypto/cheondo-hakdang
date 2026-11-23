@@ -1,13 +1,13 @@
-/* 청도학당 · Firebase 연결 (claude.ai 밖에서 친구들과 함께 쓰기)
+/* 송현학당 · Firebase 연결 (claude.ai 밖에서 친구들과 함께 쓰기)
    Firebase Realtime Database + 익명 로그인으로 학당의 공유 저장소·실시간 접속을 대신합니다.
    firebase-config.js 가 비어 있으면 아무것도 하지 않고, 학당은 혼자 모드(이 기기 저장)로 동작합니다. */
 (function(){
   const CFG=window.FIREBASE_CONFIG;
   if(window.claude||!window.firebase||!CFG||!CFG.apiKey||!CFG.databaseURL)return;
-  let app,auth,fdb;const BASE=window.CLOUD_BASE||'';const R=p=>fdb.ref(BASE+p);const CS=window.__cloudState={stage:'start',err:''};
+  let app,auth,fdb;const BASE=(window.CLASS&&window.CLASS.base)||'';const R=p=>fdb.ref(BASE+p);const CS=window.__cloudState={stage:'start',err:''};
   try{app=firebase.initializeApp(CFG);auth=firebase.auth();fdb=firebase.database();}catch(e){CS.stage='fail';CS.err='init';console.warn('Firebase 초기화 실패',e);return;}
   const TS=firebase.database.ServerValue.TIMESTAMP;
-  const lsGet=k=>{try{const v=localStorage.getItem('cheongdo.'+k);return v==null?null:JSON.parse(v);}catch(e){return null;}};
+  const lsGet=k=>{try{const v=localStorage.getItem('songhyeon.'+k);return v==null?null:JSON.parse(v);}catch(e){return null;}};
   let uid=null,joined=false,joinWaiters=[];
   const readyP=new Promise(res=>joinWaiters.push(res));
   const markJoined=()=>{if(joined)return;joined=true;CS.stage='ok';CS.err='';R('stamps').limitToFirst(1).get().then(()=>{window.__rulesOld=false;},e=>{if(/permission/i.test(String(e&&e.message||e))){window.__rulesOld=true;}});joinWaiters.forEach(f=>f());joinWaiters=[];};
@@ -19,11 +19,11 @@
   }).catch(e=>{CS.err='auth';CS.msg=String(e&&(e.code||e.message)||e);console.warn('익명 로그인 실패 — Firebase 콘솔에서 익명 로그인을 켰는지 확인해 주세요',e);});
 
   /* ---------- db (Firestore 비슷한 모양으로 감싸기) ---------- */
-  const ROOTS={members:'members',stamps:'stamps',likes:'likes',profiles:'profiles'};
-  const pathOf=col=>ROOTS[col]||(col.split('/')[0]==='letters'?col:('data/'+col));
+  const ROOTS={members:'members',stamps:'stamps',likes:'likes',settings:'settings',warns:'warns',profiles:'profiles'};
+  const pathOf=col=>ROOTS[col]||(['letters','plans'].includes(col.split('/')[0])?col:('data/'+col));
   const mkDoc=(id,v)=>({id,exists:v!=null,data:()=>v==null?undefined:v,metadata:{fromCache:false,hasPendingWrites:false}});
   const errOf=e=>({code:/permission/i.test(String(e&&e.message||e))?'invalid_argument':'unavailable',message:String(e&&e.message||e)});
-  function docRef(path){const parts=path.split('/');const top=parts[0];const ref=R(top==='members'||top==='letters'||top==='profiles'||top==='stamps'||top==='likes'?path:'data/'+path);
+  function docRef(path){const parts=path.split('/');const top=parts[0];const ref=R(top==='members'||top==='letters'||top==='plans'||top==='profiles'||top==='stamps'||top==='likes'||top==='settings'||top==='warns'?path:'data/'+path);
     return {id:parts[parts.length-1],path,
       set:o=>(top==='members'?ref.update(o):ref.set(o)).catch(e=>{throw errOf(e);}),
       update:o=>ref.update(o).catch(e=>{throw errOf(e);}),
@@ -69,9 +69,6 @@
       join:()=>Promise.reject({code:'not_permitted'}),
       canSendToClaudeSession:async()=>'off'};}
 
-  window.__cloudDM={ready:()=>!!(uid&&joined),
-    send(to,msg){const r=R('dm/'+to).push();return r.set({by:uid,to,t:String(msg.t||'').slice(0,300),g:String(msg.g||'').slice(0,2500),ts:Date.now()});},
-    listen(cb){const t0=Date.now()-6*3600e3;R('dm/'+uid).on('child_added',s=>{const v=s.val();const k=s.key;if(v&&v.by&&(v.ts||0)>t0){try{cb(v);}catch(e){}}R('dm/'+uid+'/'+k).remove().catch(()=>{});},()=>{});}};
   window.__cloudAdmin={
     async kick(id,nick){await R('bans/'+id).set({ts:Date.now(),nick:String(nick||'').slice(0,12)});
       try{const s=await R('presence').get();const jobs=[];s.forEach(c=>{const v=c.val()||{};if(v.by===id)jobs.push(R('presence/'+c.key).remove());});await Promise.all(jobs);}catch(e){}},

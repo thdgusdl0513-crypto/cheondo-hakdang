@@ -1,4 +1,4 @@
-/* 청도학당 · spaces & seasons */
+/* 송현학당 · spaces & seasons */
 const MONTHS={1:['snow','한겨울 눈','❄️'],2:['snow','겨울 끝자락','❄️'],3:['spring','이른 봄','🌱'],4:['spring','벚꽃','🌸'],5:['birthday','생일 축하의 달','🎂'],6:['summer','화창한 초여름','☀️'],7:['rain','장마','☔'],8:['summer','한여름 햇살','🌻'],9:['autumn','초가을','🍂'],10:['halloween','할로윈','🎃'],11:['autumn','단풍','🍁'],12:['xmas','크리스마스','🎄']};
 let SEASON=null;
 function makeSeason(month,tod){const [key,name,ico]=MONTHS[month];const S={month,key,name,ico,tod};
@@ -105,21 +105,21 @@ function buildCampus(S){reseed(21);const G=new THREE.Group();const T=[];const sp
   const path=(x1,z1,x2,z2,w)=>{const dx=x2-x1,dz=z2-z1,L=Math.hypot(dx,dz);const t=ctex(64,256,(g)=>{g.drawImage(TEX.paving.image,0,0,64,256);},[1,Math.max(1,Math.round(L/3))]);const m=new THREE.Mesh(new THREE.PlaneGeometry(w,L),std(S.snow?0xdfe6ea:0xffffff,{map:t,roughness:.95}));m.rotation.x=-PI/2;m.rotation.z=-Math.atan2(dx,dz)+PI;m.position.set((x1+x2)/2,.015,(z1+z2)/2);G.add(m);};
   path(0,4,0,22,3);path(0,-10,0,-16,3);path(-5,-7,-13,-16,2.4);path(5,-7,13,-16,2.4);path(-7,-4,-22,-5,2.4);path(-6,0,-22,11,2.4);path(7,-2,22,3,2.6);
   // buildings
-  hall(G,{x:0,z:-21.6,w:12,d:9,h:4.2,two:true,plaque:'圖書閣',label:'도서관 · 청도각',doorColor:0x9fe6ff});
-  hall(G,{x:-13,z:-20.2,w:7.2,d:6,h:3.4,plaque:'基礎魔法堂',label:'마법학 기초 · 전공필수'});
-  hall(G,{x:13,z:-20.2,w:7.2,d:6,h:3.4,plaque:'靈藥堂',label:'마법약 수업 · 전공필수',wallMat:std(0x5a5e58),doorColor:0x8affb0,plaqueBg:'#1a2a20',plaqueFg:'#9fe8b0'});
-  hall(G,{x:25.2,z:3,rot:-PI/2,w:10,d:6.4,h:3.8,plaque:'溫和寮',label:'기숙사 · 온화료',panel:TEX.panelRed,wallMat:std(0xb03a2c),pillar:std(0x6a2018),roofMat:MAT.tileRed,warm:true,plaqueBg:'#5a1410',plaqueFg:'#ffd27a'});
+  hall(G,{x:0,z:-21.6,w:12,d:9,h:4.2,two:true,plaque:'圖書館',label:RL('library'),doorColor:0x9fe6ff});
+  hall(G,{x:-13,z:-20.2,w:7.2,d:6,h:3.4,plaque:'基礎魔法堂',label:RL('basics')});
+  hall(G,{x:13,z:-20.2,w:7.2,d:6,h:3.4,plaque:'靈藥堂',label:RL('potion'),wallMat:std(0x5a5e58),doorColor:0x8affb0,plaqueBg:'#1a2a20',plaqueFg:'#9fe8b0'});
+  hall(G,{x:25.2,z:3,rot:-PI/2,w:10,d:6.4,h:3.8,plaque:'溫和寮',label:RL('dorm'),panel:TEX.panelRed,wallMat:std(0xb03a2c),pillar:std(0x6a2018),roofMat:MAT.tileRed,warm:true,plaqueBg:'#5a1410',plaqueFg:'#ffd27a'});
   // greenhouse
   {const g=new THREE.Group();g.position.set(-25.5,0,-5);g.rotation.y=PI/2;G.add(g);box(g,9,.3,6.5,MAT.stone,0,.15,0);const gw=new THREE.Mesh(new THREE.BoxGeometry(8.4,3.4,6),MAT.glass);gw.position.y=2;g.add(gw);
     for(let i=0;i<=6;i++){box(g,.1,3.4,.1,MAT.woodDark,-4.2+i*1.4,2,3);box(g,.1,3.4,.1,MAT.woodDark,-4.2+i*1.4,2,-3);}box(g,8.6,.12,.12,MAT.woodDark,0,3.7,3);box(g,8.6,.12,.12,MAT.woodDark,0,3.7,-3);
     [-1,1].forEach(s=>{const r=new THREE.Mesh(new THREE.PlaneGeometry(8.6,3.5),MAT.glass);r.position.set(0,4.5,s*1.55);r.rotation.x=-PI/2+s*-.52;g.add(r);});box(g,8.6,.14,.14,MAT.woodDark,0,5.35,0);
     for(let i=0;i<14;i++){sph(g,R(.3,.6),std([0x4c8a3a,0x6aa84a,0x3a7a4a][i%3]),R(-3.6,3.6),R(.5,1.2),R(-2.4,2.4));}for(let i=0;i<6;i++){const gl=glow(0xffe8a0,1,.5);gl.position.set(R(-3,3),R(1,3),R(-2,2));g.add(gl);}
-    const door=new THREE.Mesh(new THREE.PlaneGeometry(1.6,2.4),new THREE.MeshBasicMaterial({color:0xcff0c0}));door.position.set(0,1.5,3.04);g.add(door);const L=makeLabel('약초학 온실 · 전공선택');L.sprite.position.set(0,6.4,2);L.sprite.scale.set(3.2,.6,1);g.add(L.sprite);}
+    const door=new THREE.Mesh(new THREE.PlaneGeometry(1.6,2.4),new THREE.MeshBasicMaterial({color:0xcff0c0}));door.position.set(0,1.5,3.04);g.add(door);const L=makeLabel(RL('herbs'));L.sprite.position.set(0,6.4,2);L.sprite.scale.set(3.2,.6,1);g.add(L.sprite);}
   // training pavilion
   {const g=new THREE.Group();g.position.set(-25.5,0,11);g.rotation.y=PI/2;G.add(g);box(g,9,.5,7,MAT.stone,0,.25,0);const fl=new THREE.Mesh(new THREE.PlaneGeometry(8.4,6.4),std(0xffffff,{map:TEX.floorLight}));fl.rotation.x=-PI/2;fl.position.y=.52;g.add(fl);
     [[-4,-3],[0,-3],[4,-3],[-4,3],[0,3],[4,3]].forEach(p=>cyl(g,.18,.2,3.4,10,MAT.red,p[0],2.2,p[1]));const rf=curvedRoof(11,9.4,1,.36,.2);rf.position.y=4.5;g.add(rf);if(S.snow){const sn=curvedRoof(10.6,9,1,.1,.2,MAT.white);sn.position.y=4.75;g.add(sn);}
     for(let i=0;i<3;i++){const dm=new THREE.Group();dm.position.set(-2.5+i*2.5,.5,-1);g.add(dm);cyl(dm,.1,.12,1.6,8,MAT.woodLight,0,.8,0);cyl(dm,.25,.25,.7,10,std(0xc8a070),0,1.2,0);box(dm,1,.08,.08,MAT.woodLight,0,1.3,0);sph(dm,.18,std(0xc8a070),0,1.75,0);}
-    const L=makeLabel('기초체력 수련장 · 전공선택');L.sprite.position.set(0,6.2,2);L.sprite.scale.set(3.2,.6,1);g.add(L.sprite);}
+    const L=makeLabel(RL('training'));L.sprite.position.set(0,6.2,2);L.sprite.scale.set(3.2,.6,1);g.add(L.sprite);}
   // pond
   {const p=new THREE.Mesh(new THREE.CircleGeometry(2.8,36),std(S.snow?0xcfe2ee:0x1c3a46,{metalness:S.snow?0:.5,roughness:S.snow?.4:.15}));p.rotation.x=-PI/2;p.position.set(-11,.03,9);G.add(p);p.userData.act='fish';{const fd=new THREE.Group();fd.position.set(-11,0,12.15);G.add(fd);box(fd,1.5,.14,.9,MAT.woodDark,0,.12,0);box(fd,.5,.32,.45,MAT.woodLight,0,.34,.25);cyl(fd,.05,.05,1.3,6,MAT.woodLight,.62,.65,-.3).rotation.x=-.5;const FL=makeLabel(S.snow?'🎣 얼음 낚시':'🎣 낚시하기');FL.sprite.position.set(0,2.1,0);FL.sprite.scale.set(2.6,.5,1);fd.add(FL.sprite);fd.traverse(c=>{c.userData.act='fish';});}const rim=new THREE.Mesh(new THREE.TorusGeometry(2.85,.18,6,36),MAT.stoneDark);rim.rotation.x=-PI/2;rim.position.set(-11,.05,9);G.add(rim);sp.obs.push({x:-11,z:9,r:3.1});
     if(!S.snow)for(let i=0;i<6;i++){const a=rnd()*6,r=R(.5,2.1);const pad=new THREE.Mesh(new THREE.CircleGeometry(R(.22,.34),12),std(0x3a6a40));pad.rotation.x=-PI/2;pad.position.set(-11+Math.cos(a)*r,.06,9+Math.sin(a)*r);G.add(pad);if((S.month>=6&&S.month<=8)&&i%2===0){cyl(G,.14,.04,.18,6,emis(0xf6b0c8,.5),pad.position.x,.15,pad.position.z);}}}
@@ -236,14 +236,18 @@ function bikeMesh(col){const b=new THREE.Group();const fm=std(col,{metalness:.3,
   box(b,.36,.03,.03,tr,0,.71,-.34);box(b,.12,.04,.2,tr,0,.6,.06);b.userData.bike=1;return b;}
 
 /* ---------- interiors ---------- */
+const BT=(room,i,d)=>{const B=(window.CLS_BOARDS&&window.CLS_BOARDS[room])||{};const v=B[i];return (typeof v==='string'&&v.trim())?v.trim().slice(0,40):d;};
+const RL=id=>ROOMS[id].name+(ROOMS[id].tag?' · '+ROOMS[id].tag.replace(' ',''):'');
+const ROOM_DEF={};
 const ROOMS={
  potion:{name:'마법약 수업',en:'II · POTIONS — 靈藥堂',tag:'전공 필수',title:'끓는 솥 앞에서,<br>집중의 물약을.',study:true},
  basics:{name:'마법학 기초',en:'I · FOUNDATIONS — 基礎魔法堂',tag:'전공 필수',title:'기(氣)의 흐름,<br>첫 주문을 익히다.',study:true},
  herbs:{name:'약초학 수업',en:'III · HERBOLOGY — 藥草園',tag:'전공 선택',title:'유리 온실 속,<br>약초가 자라는 시간.',study:true},
  training:{name:'기초체력훈련',en:'IV · TRAINING — 修鍊場',tag:'전공 선택',title:'몸이 단단해야<br>마법도 단단하다.',study:true},
- library:{name:'도서관 · 청도각',en:'V · LIBRARY — 圖書閣',tag:'자유 독서',title:'구름 위,<br>현자들의 서고.',study:true},
+ library:{name:'도서관',en:'V · LIBRARY — 圖書館',tag:'자유 독서',title:'구름 위,<br>현자들의 서고.',study:true},
  dorm:{name:'기숙사 · 온화료',en:'DORMITORY — 溫和寮',tag:'자유 대화',title:'노을 지는 창가,<br>우리들의 공부방.',study:false},
  sauna:{name:'사우나 · 한증막',en:'SAUNA — 汗蒸幕',tag:'겨울 휴식',title:'따끈따끈,<br>몸도 마음도 노곤노곤.',study:false}};
+Object.keys(ROOMS).forEach(k=>ROOM_DEF[k]=Object.assign({},ROOMS[k]));
 function roomShell(id,S,o){const G=new THREE.Group();const T=[];const sp={id,G,tick:T,bounds:[-7.2,7.2,-6.2,6.6],obs:[],seats:[],triggers:[],doors:[{x:0,z:6.6,r:.9,to:'campus'}],spawn:{x:0,z:5.2}};
   const fl=new THREE.Mesh(new THREE.PlaneGeometry(16,14),std(0xffffff,{map:o.floor,roughness:.8}));fl.rotation.x=-PI/2;G.add(fl);
   const H=o.wallH||5;const wm=o.wallMat||MAT.plaster;
@@ -265,11 +269,11 @@ function buildRoom(id,S){reseed(id.length*97+3);let sp;
    T.push((t,dt)=>bub.forEach(o=>{o.p+=dt;const k=o.p%1.4;o.b.position.y=1.02+k*.4;o.b.scale.setScalar(1-k*.6);}));
    box(G,4.4,.9,1.2,MAT.woodDark,0,.45,-4.9);sp.obs.push({x:-1.5,z:-4.9,r:.9},{x:1.5,z:-4.9,r:.9},{x:0,z:-4.9,r:.9});const big=new THREE.Mesh(new THREE.SphereGeometry(.6,20,12,0,PI*2,PI*.35,PI*.65),std(0x2a2a2e,{metalness:.5,roughness:.4,side:THREE.DoubleSide}));big.position.set(0,1.3,-4.9);G.add(big);const bl=new THREE.Mesh(new THREE.CircleGeometry(.5,20),emis(0xb07aff,1));bl.rotation.x=-PI/2;bl.position.set(0,1.68,-4.9);G.add(bl);const bg=glow(0xc090ff,2.2,.6);bg.position.set(0,1.8,-4.9);G.add(bg);
    [-1,1].forEach(s=>{const sh=new THREE.Group();sh.position.set(s*2.6,0,-6.75);G.add(sh);for(let k=0;k<4;k++){box(sh,3.4,.06,.5,MAT.wood,0,.9+k*.8,0);for(let i=0;i<9;i++){const c=[0x58e08a,0xe0587a,0x58a8e0,0xe0c058,0xb07aff][(i+k)%5];const b=cyl(sh,.08,.1,R(.2,.36),8,emis(c,.5),-1.5+i*.37,.93+k*.8+.15,0);}}});
-   const bt=textTex([{t:'靈藥 · 마법약 수업',y:60,f:'800 46px '},{t:'오늘의 조제 — 집중의 물약',y:130,f:'34px ',ff:FS},{t:'솥 앞 의자에 앉아 타이머를 시작하세요',y:190,f:'26px ',ff:FS}],{bg:'#1c2a22',fg:'#cfeedd',border:'#4a3020'});const board=new THREE.Mesh(new THREE.PlaneGeometry(4.4,2.2),new THREE.MeshBasicMaterial({map:bt}));board.position.set(0,3.6,-6.98);G.add(board);
+   const bt=textTex([{t:BT('potion',0,'靈藥 · 마법약 수업'),y:60,f:'800 46px '},{t:BT('potion',1,'오늘의 조제 — 집중의 물약'),y:130,f:'34px ',ff:FS},{t:BT('potion',2,'솥 앞 의자에 앉아 타이머를 시작하세요'),y:190,f:'26px ',ff:FS}],{bg:'#1c2a22',fg:'#cfeedd',border:'#4a3020'});const board=new THREE.Mesh(new THREE.PlaneGeometry(4.4,2.2),new THREE.MeshBasicMaterial({map:bt}));board.position.set(0,3.6,-6.98);G.add(board);
    for(let i=0;i<10;i++){const h=new THREE.Group();h.position.set(R(-7,7),4.55,R(-5,5));G.add(h);cyl(h,.01,.01,.4,3,MAT.woodDark,0,.2,0);for(let k=0;k<5;k++)sph(h,.07,std([0x5a7a3a,0x7a6a3a,0x8a4a3a][k%3]),R(-.08,.08),-.1-k*.06,R(-.08,.08),.6,1.6,.6);}
  }else if(id==='basics'){sp=roomShell(id,S,{floor:TEX.floorWarm,wains:MAT.wood,lights:[[0xffd0a0,1.3,0,4,0]]});const G=sp.G,T=sp.tick;
    const classBg=new THREE.Mesh(new THREE.PlaneGeometry(6.2,3.6),new THREE.MeshBasicMaterial({map:extTex('assets/theme/classroom-bg.png')}));classBg.position.set(0,2.78,-7.01);G.add(classBg);
-   const bt=textTex([{t:'第一講 · 마법학 기초',y:56,f:'800 44px '},{t:'기(氣)의 흐름과 주문의 첫걸음',y:120,f:'32px ',ff:FS},{t:'“서두르지 말고, 멈추지 말라.”',y:185,f:'30px ',ff:FS}],{bg:'#1f3a2e',fg:'#eef2e2',border:'#5a3a24',extra:(g)=>{g.strokeStyle='rgba(255,255,255,.35)';g.lineWidth=2;g.beginPath();g.arc(450,200,40,0,PI*2);g.stroke();g.beginPath();g.arc(450,200,22,0,PI*2);g.stroke();}});
+   const bt=textTex([{t:BT('basics',0,'第一講 · 마법학 기초'),y:56,f:'800 44px '},{t:BT('basics',1,'기(氣)의 흐름과 주문의 첫걸음'),y:120,f:'32px ',ff:FS},{t:BT('basics',2,'“서두르지 말고, 멈추지 말라.”'),y:185,f:'30px ',ff:FS}],{bg:'#1f3a2e',fg:'#eef2e2',border:'#5a3a24',extra:(g)=>{g.strokeStyle='rgba(255,255,255,.35)';g.lineWidth=2;g.beginPath();g.arc(450,200,40,0,PI*2);g.stroke();g.beginPath();g.arc(450,200,22,0,PI*2);g.stroke();}});
    const board=new THREE.Mesh(new THREE.PlaneGeometry(5.6,2.8),new THREE.MeshBasicMaterial({map:bt}));board.position.set(0,2.9,-6.97);G.add(board);box(G,5.9,.12,.2,MAT.woodDark,0,1.45,-6.9);
    box(G,.9,1.1,.6,MAT.woodDark,2.8,.55,-5.3);sp.obs.push({x:2.8,z:-5.3,r:.7});
    const sg=new THREE.Mesh(new THREE.CircleGeometry(1.8,48),new THREE.MeshBasicMaterial({map:TEX.sigil,color:0xffd890,transparent:true,opacity:.7,blending:THREE.AdditiveBlending,depthWrite:false}));sg.rotation.x=-PI/2;sg.position.set(0,.03,-4.3);G.add(sg);T.push(t=>sg.rotation.z=t*.15);
@@ -286,7 +290,7 @@ function buildRoom(id,S){reseed(id.length*97+3);let sp;
    for(let i=0;i<9;i++){const h=new THREE.Group();h.position.set(R(-6,6),4.6,R(-5.5,4));G.add(h);cyl(h,.2,.15,.25,10,std(0xb8643a),0,0,0);for(let k=0;k<6;k++){const v=sph(h,.07,std(0x4c9a3a),R(-.2,.2),-.1-k*.13,R(-.2,.2),.8,1.6,.8);}}
    const bf=[];for(let i=0;i<6;i++){const b=new THREE.Group();G.add(b);const wm=std([0xf2c84b,0xe8f0ff,0xe86a8a][i%3],{side:THREE.DoubleSide,emissive:0x302010});const l=new THREE.Mesh(new THREE.PlaneGeometry(.18,.14),wm);l.position.x=-.09;b.add(l);const r=l.clone();r.position.x=.09;b.add(r);bf.push({b,l,r,p:rnd()*6,c:[R(-5,5),R(1.5,3.5),R(-4,4)]});}
    T.push(t=>bf.forEach(o=>{o.b.position.set(o.c[0]+Math.sin(t*.4+o.p)*2,o.c[1]+Math.sin(t*1.3+o.p)*.4,o.c[2]+Math.cos(t*.3+o.p)*2);const f=Math.sin(t*16+o.p)*.9;o.l.rotation.y=f;o.r.rotation.y=-f;o.b.rotation.y=t*.4+o.p;}));
-   const bt=textTex([{t:'藥草園 · 약초학',y:60,f:'800 44px '},{t:'오늘의 약초 — 월광초 기르기',y:130,f:'32px ',ff:FS}],{w:512,h:180,bg:'#2a3a22',fg:'#eef5d8',border:'#5a3a24'});const board=new THREE.Mesh(new THREE.PlaneGeometry(3.2,1.1),new THREE.MeshBasicMaterial({map:bt}));board.position.set(0,3.3,-6.9);G.add(board);
+   const bt=textTex([{t:BT('herbs',0,'藥草園 · 약초학'),y:60,f:'800 44px '},{t:BT('herbs',1,'오늘의 약초 — 월광초 기르기'),y:130,f:'32px ',ff:FS}],{w:512,h:180,bg:'#2a3a22',fg:'#eef5d8',border:'#5a3a24'});const board=new THREE.Mesh(new THREE.PlaneGeometry(3.2,1.1),new THREE.MeshBasicMaterial({map:bt}));board.position.set(0,3.3,-6.9);G.add(board);
  }else if(id==='training'){sp=roomShell(id,S,{floor:TEX.floorLight,wains:MAT.woodDark,lights:[[0xfff0d8,1.4,0,4.4,0]]});const G=sp.G,T=sp.tick;
    const sc=textTex([{t:'體',y:150,f:'800 150px '},{t:'力',y:330,f:'800 150px '}],{w:256,h:460,bg:'#f2ead6',fg:'#1a1410',border:'#7a4a2a'});const scr=new THREE.Mesh(new THREE.PlaneGeometry(1.4,2.5),new THREE.MeshBasicMaterial({map:sc}));scr.position.set(0,2.8,-6.97);G.add(scr);cyl(G,.05,.05,1.6,6,MAT.woodDark,0,4.1,-6.92).rotation.z=PI/2;
    [-3.6,0,3.6].forEach(x=>[-1.4,2.6].forEach(z=>{const m=new THREE.Mesh(new THREE.BoxGeometry(2.2,.06,2.2),std(0x3a6a6a));m.position.set(x,.03,z);G.add(m);box(G,2.2,.07,.08,std(0xd8bd7a),x,.035,z+1.08);box(G,2.2,.07,.08,std(0xd8bd7a),x,.035,z-1.08);addSeat(sp,x,z,0,.07);}));
