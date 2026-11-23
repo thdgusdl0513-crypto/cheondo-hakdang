@@ -1,10 +1,10 @@
 {
- "name": "송현학당",
- "short_name": "송현학당",
+ "name": "청도학당",
+ "short_name": "청도학당",
  "start_url": "./",
  "scope": "./",
  "display": "standalone",
- "background_color": "#fff0dc",
+ "background_color": "#e4f0ff",
  "theme_color": "#2a1a12",
  "icons": [
   {
